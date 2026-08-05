@@ -15,9 +15,18 @@ resource "aws_network_acl" "developers_access_control_list" {
     aws_subnet.developers_public_subnet2.id,
   ]
 
+  ingress {
+    rule_no = 100
+    protocol = "tcp"
+    action = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port = 80
+    to_port = 80 # Allow inbound HTTP traffic
+  }
+
   # Inbound Rules
   ingress {
-    rule_no    = 100
+    rule_no    = 105
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
@@ -35,16 +44,7 @@ resource "aws_network_acl" "developers_access_control_list" {
   }
 
   ingress {
-    rule_no    = 120
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 1024
-    to_port    = 65535 # Allow return traffic on ephemeral ports (required for stateless NACL)
-  }
-
-  ingress {
-    rule_no    = 130
+    rule_no    = 115
     protocol   = "-1" # All protocols
     action     = "allow"
     cidr_block = "10.2.0.0/16"
@@ -54,30 +54,12 @@ resource "aws_network_acl" "developers_access_control_list" {
 
   # Outbound Rules
   egress {
-    rule_no    = 100
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443 # Allow outbound HTTPS traffic
-  }
-
-  egress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "${var.admin_IP_address}"
-    from_port  = 22
-    to_port    = 22 # Allow outbound SSH responses to admin IP
-  }
-
-  egress {
     rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 1024
-    to_port    = 65535 # Allow outbound responses via ephemeral ports
+    to_port    = 65535 # Allow outbound responses to clients on ephemeral ports
   }
 
   egress {
@@ -107,7 +89,16 @@ resource "aws_network_acl" "finance_access_control_list" {
 
   # Inbound Rules
   ingress {
-    rule_no    = 100
+    rule_no = 100
+    protocol = "tcp"
+    action = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port = 80 # Allow inbound HTTP traffic
+    to_port = 80
+  }
+
+  ingress {
+    rule_no    = 105
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
@@ -116,16 +107,7 @@ resource "aws_network_acl" "finance_access_control_list" {
   }
 
   ingress {
-    rule_no    = 120
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 1024
-    to_port    = 65535 # Allow return traffic on ephemeral ports
-  }
-
-  ingress {
-    rule_no    = 130
+    rule_no    = 110
     protocol   = "-1" # All protocols
     action     = "allow"
     cidr_block = "10.1.0.0/16"
@@ -135,30 +117,21 @@ resource "aws_network_acl" "finance_access_control_list" {
 
   # Outbound Rules
   egress {
-    rule_no    = 100
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443 # Allow outbound HTTPS traffic
-  }
-
-  egress {
     rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 1024
-    to_port    = 65535 # Allow outbound responses via ephemeral ports
+    to_port    = 65535 # Allow outbound responses to clients on ephemeral ports (NACLs are like a stateless firewalls)
   }
 
   egress {
-    rule_no    = 130
-    protocol   = "-1" # All protocols
-    action     = "allow"
+    rule_no = 130
+    protocol = "-1"
+    action = "allow"
     cidr_block = "10.1.0.0/16"
-    from_port  = 0
-    to_port    = 0 # Allow all outbound traffic to Developers VPC via Peering
+    from_port = 0
+    to_port = 0 # Allow all onbound traffic to Developers VPC via Peering
   }
 }
 
