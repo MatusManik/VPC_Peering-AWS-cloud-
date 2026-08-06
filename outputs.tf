@@ -1,16 +1,26 @@
 # TERRAFORM OUTPUTS
 
 # AWS EC2 Output Values
-# Public IP address assigned to the Developers EC2 instance
-output "developers_ec2_public_ip" {
-  description = "Public IP address for Developers EC2 instance"
-  value       = aws_instance.developers_instance.public_ip
+# Public IP addresses assigned to the Developers EC2 instances
+output "developers_ec2_1_public_ip" {
+  description = "Public IP address for first Developers EC2 instance"
+  value       = aws_instance.developers_instance_sb1.public_ip
 }
 
-# Public IP address assigned to the Finance EC2 instance
-output "finance_ec2_public_ip" {
-  description = "Public IP address for Finance EC2 instance"
-  value       = aws_instance.finance_instance.public_ip
+output "developers_ec2_2_public_ip" {
+  description = "Public IP address for second Developers EC2 instance"
+  value       = aws_instance.developers_instance_sb2.public_ip
+}
+
+# Public IP addresses assigned to the Finance EC2 instances
+output "finance_ec2_1_public_ip" {
+  description = "Public IP address for first Finance EC2 instance"
+  value       = aws_instance.finance_instance_sb1.public_ip
+}
+
+output "finance_ec2_2_public_ip" {
+  description = "Public IP address for second Finance EC2 instance"
+  value       = aws_instance.finance_instance_sb2.public_ip
 }
 
 # AWS RDS (Database) Output Values
