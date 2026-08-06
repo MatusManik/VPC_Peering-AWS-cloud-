@@ -20,3 +20,9 @@ variable "ami_id" {
   type        = string
   default     = "ami-0c55b159cbfafe1f0" # Example AMI ID for Amazon Linux 2 in eu-central-1
 }
+
+variable "instance_type" {
+  description = "The instance type for EC2 instances"
+  type        = string
+  default     = "t3.micro"
+}
