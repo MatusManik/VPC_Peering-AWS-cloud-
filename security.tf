@@ -248,7 +248,7 @@ resource "aws_security_group" "developers_rds_security_group" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["10.1.0.0/16"]
+    security_groups = [aws_security_group.developers_security_group.id]
   }
 
   # Outbound Rule: Restrict outbound responses to Developers VPC
@@ -257,7 +257,7 @@ resource "aws_security_group" "developers_rds_security_group" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["10.1.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -274,7 +274,7 @@ resource "aws_security_group" "finance_rds_security_group" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["10.2.0.0/16"]
+    security_groups = [aws_security_group.finance_security_group.id]
   }
 
   # Outbound Rule: Restrict outbound responses to Finance VPC
@@ -283,6 +283,6 @@ resource "aws_security_group" "finance_rds_security_group" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["10.2.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
